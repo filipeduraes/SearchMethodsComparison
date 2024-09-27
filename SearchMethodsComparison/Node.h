@@ -16,6 +16,18 @@ struct Node
     {
     }
 
+    static int GetHeightDifference(Node* node)
+    {
+        if(node == nullptr)
+        {
+            return 0;
+        }
+        
+        int leftHeight = GetHeight(node->left);
+        int rightHeight = GetHeight(node->right);
+        return rightHeight - leftHeight;
+    }
+
     static int GetHeight(Node* node)
     {
         if(node == nullptr)
