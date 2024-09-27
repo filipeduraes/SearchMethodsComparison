@@ -8,9 +8,21 @@ struct Node
 
     Node* left = nullptr;
     Node* right = nullptr;
+    
+    int height;
 
     Node(const TKey& key, const TValue& value)
         : key(key), value(value)
     {
+    }
+
+    static int GetHeight(Node* node)
+    {
+        if(node == nullptr)
+        {
+            return 0;
+        }
+
+        return node->height;
     }
 };

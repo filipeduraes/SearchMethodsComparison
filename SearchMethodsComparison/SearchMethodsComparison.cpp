@@ -1,12 +1,13 @@
 #include <cmath>
 #include <iostream>
 
+#include "AVLTree.h"
 #include "Benchmark.h"
 #include "BinaryTree.h"
 
 int main(int argc, char* argv[])
 {
-    BinaryTree<int, void*> testTree;
+    AVLTree<int, void*> testTree;
 
     testTree.Insert(92, nullptr);
     testTree.Insert(51, nullptr);

@@ -4,13 +4,13 @@
 template<typename TKey, typename TValue>
 class BinaryTree
 {
-private:
+protected:
     Node<TKey, TValue>* root = nullptr;
     
 public:
     ~BinaryTree();
 
-    void Insert(TKey key, TValue value);
+    virtual void Insert(TKey key, TValue value);
     TValue* Search(TKey key);
 
 private:
