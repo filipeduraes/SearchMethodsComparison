@@ -155,13 +155,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Benchmark.cpp" />
+    <ClCompile Include="RegisterFileGenerator.cpp" />
     <ClCompile Include="SearchMethodsComparison.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVLTree.h" />
     <ClInclude Include="Benchmark.h" />
     <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="ISearchableSet.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="RegisterFileGenerator.h" />
+    <ClInclude Include="SequentialSet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

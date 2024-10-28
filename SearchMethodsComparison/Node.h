@@ -6,12 +6,24 @@ struct Node
     TKey key;
     TValue value;
 
+    Node* parent = nullptr;
     Node* left = nullptr;
     Node* right = nullptr;
     
-    Node(const TKey& key, const TValue& value)
-        : key(key), value(value)
+    Node(const TKey& key, TValue value, Node* parent = nullptr)
+        : key(key), value(std::move(value)), parent(parent)
     {
+    }
+
+    Node** GetParentSubtree()
+    {
+        if(parent == nullptr)
+            return nullptr;
+        
+        if(parent->left != nullptr && parent->left->key == key)
+            return &parent->left;
+        
+        return &parent->right;
     }
 
     static int GetHeightDifference(Node* node)
