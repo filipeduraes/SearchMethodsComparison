@@ -9,8 +9,6 @@ struct Node
     Node* left = nullptr;
     Node* right = nullptr;
     
-    int height;
-
     Node(const TKey& key, const TValue& value)
         : key(key), value(value)
     {
@@ -23,8 +21,8 @@ struct Node
             return 0;
         }
         
-        int leftHeight = GetHeight(node->left);
-        int rightHeight = GetHeight(node->right);
+        int leftHeight = Node::GetHeight(node->left);
+        int rightHeight = Node::GetHeight(node->right);
         return rightHeight - leftHeight;
     }
 
@@ -35,6 +33,6 @@ struct Node
             return 0;
         }
 
-        return node->height;
+        return std::max(Node::GetHeight(node->left), Node::GetHeight(node->right)) + 1;
     }
 };

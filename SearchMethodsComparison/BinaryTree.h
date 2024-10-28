@@ -8,22 +8,29 @@ protected:
     Node<TKey, TValue>* root = nullptr;
     
 public:
-    ~BinaryTree();
+    virtual ~BinaryTree();
 
     virtual void Insert(TKey key, TValue value);
     TValue* Search(TKey key);
 
+    friend std::ostream& operator<<(std::ostream& stream, const BinaryTree& binaryTree)
+    {
+        return binaryTree.GenerateTreeOutputRecursive(stream, binaryTree.root);
+    }
+
+protected:
+    std::ostream& GenerateTreeOutputRecursive(std::ostream& stream, Node<TKey, TValue>* parentNode, int level = 0) const;
+
 private:
     virtual void InsertRecursive(TKey key, TValue value, Node<TKey, TValue>* currentNode);
     virtual TValue* SearchRecursive(TKey key, Node<TKey, TValue>* currentNode);
-    virtual void DisposeAllRecursive(Node<TKey, TValue>* currentNode);
+    virtual void DisposeAllRecursive(Node<TKey, TValue>* currentNode);    
 };
-
 
 template <typename TKey, typename TValue>
 BinaryTree<TKey, TValue>::~BinaryTree()
 {
-    DisposeAllRecursive(root);
+    BinaryTree::DisposeAllRecursive(root);
 }
 
 template <typename TKey, typename TValue>
@@ -35,14 +42,42 @@ void BinaryTree<TKey, TValue>::Insert(TKey key, TValue value)
     }
     else
     {
-        InsertRecursive(key, value, root); //TODO: Check if iterative solution is needed
+        BinaryTree::InsertRecursive(key, value, root); //TODO: Check if iterative solution is needed
     }
 }
 
 template <typename TKey, typename TValue>
 TValue* BinaryTree<TKey, TValue>::Search(TKey key)
 {
-    return SearchRecursive(key, root);
+    return BinaryTree::SearchRecursive(key, root);
+}
+
+template <typename TKey, typename TValue>
+std::ostream& BinaryTree<TKey, TValue>::GenerateTreeOutputRecursive(std::ostream& stream, Node<TKey, TValue>* parentNode, int level) const
+{
+    for(int i = 0; i < level; i++)
+    {
+        stream << "| ";
+    }
+    
+    if(parentNode != nullptr)
+    {
+        stream << level << ": " << parentNode->key;
+
+        if(parentNode->left != nullptr || parentNode->right != nullptr)
+        {
+            stream << "\n";
+            BinaryTree::GenerateTreeOutputRecursive(stream, parentNode->left, level + 1);
+            stream << "\n";
+            BinaryTree::GenerateTreeOutputRecursive(stream, parentNode->right, level + 1);
+        }
+    }
+    else
+    {
+        stream << level << ": -";
+    }
+
+    return stream;
 }
 
 template <typename TKey, typename TValue>
@@ -60,7 +95,7 @@ void BinaryTree<TKey, TValue>::InsertRecursive(TKey key, TValue value, Node<TKey
         }
         else
         {
-            InsertRecursive(key, value, currentNode->left);
+            BinaryTree::InsertRecursive(key, value, currentNode->left);
         }
     }
     else if(key > currentNode->key)
@@ -71,7 +106,7 @@ void BinaryTree<TKey, TValue>::InsertRecursive(TKey key, TValue value, Node<TKey
         }
         else
         {
-            InsertRecursive(key, value, currentNode->right);
+            BinaryTree::InsertRecursive(key, value, currentNode->right);
         }
     }
 }
@@ -88,12 +123,12 @@ TValue* BinaryTree<TKey, TValue>::SearchRecursive(TKey key, Node<TKey, TValue>* 
 
         if(key < currentNode->key)
         {
-            return SearchRecursive(key, currentNode->left);
+            return BinaryTree::SearchRecursive(key, currentNode->left);
         }
 
         if(key > currentNode->key)
         {
-            return SearchRecursive(key, currentNode->right);
+            return BinaryTree::SearchRecursive(key, currentNode->right);
         }
     }
 
@@ -113,6 +148,6 @@ void BinaryTree<TKey, TValue>::DisposeAllRecursive(Node<TKey, TValue>* currentNo
 
     delete currentNode;
 
-    DisposeAllRecursive(left);
-    DisposeAllRecursive(right);
+    BinaryTree::DisposeAllRecursive(left);
+    BinaryTree::DisposeAllRecursive(right);
 }

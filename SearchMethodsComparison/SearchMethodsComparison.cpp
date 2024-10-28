@@ -1,8 +1,6 @@
-#include <cmath>
 #include <iostream>
 
 #include "AVLTree.h"
-#include "Benchmark.h"
 #include "BinaryTree.h"
 
 int main(int argc, char* argv[])
@@ -19,6 +17,8 @@ int main(int argc, char* argv[])
     testTree.Insert(5, nullptr);
     testTree.Insert(1, nullptr);
     testTree.Insert(4, nullptr);
+
+    std::cout << testTree;
     
     return 0;
 }
