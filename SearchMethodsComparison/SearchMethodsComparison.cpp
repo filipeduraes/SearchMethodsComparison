@@ -8,35 +8,17 @@
 
 int main(int argc, char* argv[])
 {
-    AVLTree<int, void*> testAVL;
-    BinaryTree<int, void*> testBinary;
+    Generator::RecordFileGenerator generator(R"(D:\Projects\Github\SearchMethodsComparison\SearchMethodsComparison\)", 10000, true);
+    //generator.GenerateFile();
 
-    int keys[] = {20, 10, 40, 50, 30, 55, 3, 11, 4, 28, 36, 33, 52, 7, 25, 13};
+    ISearchableSet<int, std::shared_ptr<Generator::Record>>* avl = new AVLTree<int, std::shared_ptr<Generator::Record>>();
+    ISearchableSet<int, std::shared_ptr<Generator::Record>>* binary = new BinaryTree<int, std::shared_ptr<Generator::Record>>();
+    ISearchableSet<int, std::shared_ptr<Generator::Record>>* sequential = new SequentialSet<int, std::shared_ptr<Generator::Record>>();
 
-    for(int& key : keys)
-    {
-        testAVL.Insert(key, nullptr);
-        testBinary.Insert(key, nullptr);
-    }
+    const std::vector<ISearchableSet<int, std::shared_ptr<Generator::Record>>*> sets { avl, binary, sequential };
+    generator.PopulateSetsWithFile(sets);
     
-    for(int& key : keys)
-    {
-        testAVL.Search(key);
-        testBinary.Search(key);
-    
-        std::cout << key << " - AVL: " << testAVL.GetLastComparisonCount() << ", Binary: " << testBinary.GetLastComparisonCount() << "\n";
-    }
-    return 0;
-    //RegisterFileGenerator::GenerateFile(1000, R"(D:\Projects\Github\SearchMethodsComparison\SearchMethodsComparison\)");
-    ISearchableSet<int, std::shared_ptr<RegisterFileGenerator::Register>>* avl = new AVLTree<int, std::shared_ptr<RegisterFileGenerator::Register>>();
-    ISearchableSet<int, std::shared_ptr<RegisterFileGenerator::Register>>* binary = new BinaryTree<int, std::shared_ptr<RegisterFileGenerator::Register>>();
-    ISearchableSet<int, std::shared_ptr<RegisterFileGenerator::Register>>* sequential = new SequentialSet<int, std::shared_ptr<RegisterFileGenerator::Register>>();
-
-    PopulateSetWithFile(avl, R"(D:\Projects\Github\SearchMethodsComparison\SearchMethodsComparison\Output_1000.txt)");
-    PopulateSetWithFile(binary, R"(D:\Projects\Github\SearchMethodsComparison\SearchMethodsComparison\Output_1000.txt)");
-    PopulateSetWithFile(sequential, R"(D:\Projects\Github\SearchMethodsComparison\SearchMethodsComparison\Output_1000.txt)");
-
-    int searchedKey = 12496;
+    int searchedKey = 27808;
     
     {
         Benchmark benchmark("AVL");

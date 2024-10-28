@@ -1,46 +1,66 @@
 ﻿#include "RegisterFileGenerator.h"
 
+#include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
 
-void RegisterFileGenerator::GenerateFile(int registerCount, const std::string&& fileDirectory)
+void Generator::RecordFileGenerator::GenerateFile()
 {
     std::fstream file;
-    const std::string fileNamePrefix = "Output_";
-    const std::string fileExtension = ".txt";
-    const std::string filePath = fileDirectory + fileNamePrefix + std::to_string(registerCount) + fileExtension;
-    
+    const std::string& filePath = GetFilePath();
     file.open(filePath, std::ios::out);
 
     if(file.is_open())
     {
-        srand(time(0));
-        std::unordered_set<int> alreadyUsedKeys;
-        alreadyUsedKeys.reserve(registerCount);
+        std::vector<RecordWithKey> records;
+        GenerateRandomRecordsWithKey(records);
 
-        for(int i = 0; i < registerCount; i++)
+        if(isSorted)
         {
-            int key = rand();
+            std::sort(records.begin(), records.end(), [](const RecordWithKey& a, const RecordWithKey& b) {return a.key < b.key;} );
+        }
 
-            while (alreadyUsedKeys.find(key) != alreadyUsedKeys.end())
+        for(int i = 0; i < recordCount; i++)
+        {
+            const RecordWithKey& recordWithKey = records[i];
+            file << recordWithKey.key << "," << recordWithKey.record->firstData << "," << recordWithKey.record->secondData;
+
+            if(i < recordCount - 1)
             {
-                key = rand();
+                file << "\n";
             }
-
-            alreadyUsedKeys.insert(key);
-            std::shared_ptr<Register> randomRegister = GenerateRandomRegister();
-
-            file << key << "," << randomRegister->firstData << "," << randomRegister->secondData << "\n";
         }
 
         file.close();
     }
 }
 
-void RegisterFileGenerator::PopulateSetWithFile(ISearchableSet<int, std::shared_ptr<Register>>* set, const std::string&& filePath)
+void Generator::RecordFileGenerator::GenerateRandomRecordsWithKey(std::vector<RecordWithKey>& records) const
 {
-    std::ifstream file(filePath);
+    srand(time(0));
+    std::unordered_set<int> alreadyUsedKeys;
+    alreadyUsedKeys.reserve(recordCount);
+    records.reserve(recordCount);
+
+    for(int i = 0; i < recordCount; i++)
+    {
+        int key = rand();
+
+        while (alreadyUsedKeys.find(key) != alreadyUsedKeys.end())
+        {
+            key = rand();
+        }
+
+        Record record = GenerateRandomRecord();
+        alreadyUsedKeys.insert(key);
+        records.emplace_back(key, std::make_unique<Record>(record));
+    }
+}
+
+void Generator::RecordFileGenerator::PopulateSetsWithFile(const std::vector<ISearchableSet<int, std::shared_ptr<Record>>*>& sets) const
+{
+    std::ifstream file(GetFilePath());
 
     if(file.is_open())
     {
@@ -56,8 +76,12 @@ void RegisterFileGenerator::PopulateSetWithFile(ISearchableSet<int, std::shared_
 
             if(lineStream >> key >> delimiter >> firstData >> delimiter && std::getline(lineStream, secondData))
             {
-                std::shared_ptr<Register> data = std::make_shared<Register>(firstData, secondData);
-                set->Insert(key, data);
+                std::shared_ptr<Record> record = std::make_shared<Record>(firstData, secondData);
+                
+                for (ISearchableSet<int, std::shared_ptr<Record>>* set : sets)
+                {
+                    set->Insert(key, record);                    
+                }
             }
         }
 
@@ -65,7 +89,15 @@ void RegisterFileGenerator::PopulateSetWithFile(ISearchableSet<int, std::shared_
     }
 }
 
-std::shared_ptr<RegisterFileGenerator::Register> RegisterFileGenerator::GenerateRandomRegister()
+std::string Generator::RecordFileGenerator::GetFilePath() const
+{
+    const std::string fileNamePrefix = isSorted ? "Output_Sorted_" : "Output_";
+    const std::string fileExtension = ".txt";
+    const std::string filePath = directory + fileNamePrefix + std::to_string(recordCount) + fileExtension;
+    return filePath;
+}
+
+Generator::Record Generator::RecordFileGenerator::GenerateRandomRecord()
 {
     const int firstData = rand();
     std::string secondData;
@@ -84,5 +116,5 @@ std::shared_ptr<RegisterFileGenerator::Register> RegisterFileGenerator::Generate
         secondData += letter;
     }
 
-    return std::make_shared<Register>(firstData, secondData);
+    return Record(firstData, secondData);
 }

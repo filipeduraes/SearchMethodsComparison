@@ -18,7 +18,7 @@ private:
 template <typename TKey, typename TValue>
 void AVLTree<TKey, TValue>::Insert(TKey key, TValue value)
 {
-    Node<TKey, TValue>* insertedNode = BinaryTree<TKey, TValue>::InsertRecursive(key, value, this->root);
+    Node<TKey, TValue>* insertedNode = BinaryTree<TKey, TValue>::SimpleInsert(key, value);
     AVLTree::BalanceNode(insertedNode->parent);
 }
 
