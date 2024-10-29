@@ -14,6 +14,7 @@ int main(int argc, char* argv[])
 
     const std::vector<RecordFileHandler> recordFileHandlers
     {
+        RecordFileHandler(directoryPath, 100, false),
         RecordFileHandler(directoryPath, 500, false),
         RecordFileHandler(directoryPath, 1000, false),
         RecordFileHandler(directoryPath, 10000, false),
