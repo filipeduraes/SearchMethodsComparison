@@ -1,6 +1,8 @@
 ﻿#pragma once
 
+#include <ostream>
 #include <stack>
+
 #include "ISearchableSet.h"
 #include "Node.h"
 

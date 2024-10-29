@@ -1,32 +1,21 @@
 ﻿#include "Benchmark.h"
 
-#include <iostream>
-
-Benchmark::Benchmark(std::string label)
-    : label(std::move(label))
+void Benchmark::Start()
 {
     startTimePoint = std::chrono::high_resolution_clock::now();
 }
 
-Benchmark::~Benchmark()
-{
-    Stop();
-}
-
-void Benchmark::Stop() const
+void Benchmark::Stop()
 {
     std::chrono::steady_clock::time_point endTimePoint = std::chrono::high_resolution_clock::now();
 
     const long long start = std::chrono::time_point_cast<std::chrono::microseconds>(startTimePoint).time_since_epoch().count();
     const long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimePoint).time_since_epoch().count();
 
-    const long long durationMicroseconds = end - start;
-    const double durationMiliseconds = durationMicroseconds * 0.001;
+    const long long currentDurationMicroseconds = end - start;
+    const double currentDurationMilliseconds = currentDurationMicroseconds * 0.001;
 
-    if(!label.empty())
-    {
-        std::cout << label << ": ";
-    }
-
-    std::cout << "Duration microseconds: " << durationMicroseconds << ", miliseconds: " << durationMiliseconds << "\n";
+    microsecondsSum += currentDurationMicroseconds;
+    millisecondsSum += currentDurationMilliseconds;
+    testsCount++;
 }

@@ -1,45 +1,35 @@
-#include <iostream>
+#include "RegisterFileHandler.h"
+#include "SearchComparisonBenchmark.h"
 
-#include "AVLTree.h"
-#include "Benchmark.h"
-#include "BinaryTree.h"
-#include "RegisterFileGenerator.h"
-#include "SequentialSet.h"
+std::string GetCurrentDirectoryPath(char** argv)
+{
+    const std::string programPath = argv[0];
+    const size_t separatorIndex = programPath.find_last_of("\\/");
+    return programPath.substr(0, separatorIndex + 1);
+}
 
 int main(int argc, char* argv[])
 {
-    Generator::RecordFileGenerator generator(R"(D:\Projects\Github\SearchMethodsComparison\SearchMethodsComparison\)", 10000, true);
-    //generator.GenerateFile();
+    const std::string directoryPath = GetCurrentDirectoryPath(argv);
 
-    ISearchableSet<int, std::shared_ptr<Generator::Record>>* avl = new AVLTree<int, std::shared_ptr<Generator::Record>>();
-    ISearchableSet<int, std::shared_ptr<Generator::Record>>* binary = new BinaryTree<int, std::shared_ptr<Generator::Record>>();
-    ISearchableSet<int, std::shared_ptr<Generator::Record>>* sequential = new SequentialSet<int, std::shared_ptr<Generator::Record>>();
+    const std::vector<RecordFileHandler> recordFileHandlers
+    {
+        RecordFileHandler(directoryPath, 500, false),
+        RecordFileHandler(directoryPath, 1000, false),
+        RecordFileHandler(directoryPath, 10000, false),
+        RecordFileHandler(directoryPath, 100, true),
+        RecordFileHandler(directoryPath, 500, true),
+        RecordFileHandler(directoryPath, 1000, true),
+        RecordFileHandler(directoryPath, 10000, true)
+    };
 
-    const std::vector<ISearchableSet<int, std::shared_ptr<Generator::Record>>*> sets { avl, binary, sequential };
-    generator.PopulateSetsWithFile(sets);
-    
-    int searchedKey = 27808;
-    
+    SearchComparisonBenchmark<15> benchmark(recordFileHandlers);
+
+    if(!benchmark.TryGenerateRecordFiles())
     {
-        Benchmark benchmark("AVL");
-        avl->Search(searchedKey);
+        return -1;
     }
-    {
-        Benchmark benchmark("Binary");
-        binary->Search(searchedKey);
-    }
-    {
-        Benchmark benchmark("Sequential");
-        sequential->Search(searchedKey);
-    }
-    
-    std::cout << "\nAVL Comparisons: " << avl->GetLastComparisonCount();
-    std::cout << "\nBinary Comparisons: " << binary->GetLastComparisonCount();
-    std::cout << "\nSequencial Comparisons: " << sequential->GetLastComparisonCount();
-    
-    delete avl;
-    delete binary;
-    delete sequential;
-    
+
+    benchmark.BenchmarkAllFiles();    
     return 0;
 }

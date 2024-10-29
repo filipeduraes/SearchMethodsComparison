@@ -1,11 +1,11 @@
-﻿#include "RegisterFileGenerator.h"
+﻿#include "RegisterFileHandler.h"
 
 #include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
 
-void Generator::RecordFileGenerator::GenerateFile()
+std::string RecordFileHandler::GenerateFile() const
 {
     std::fstream file;
     const std::string& filePath = GetFilePath();
@@ -13,17 +13,17 @@ void Generator::RecordFileGenerator::GenerateFile()
 
     if(file.is_open())
     {
-        std::vector<RecordWithKey> records;
+        std::vector<RecordKeyPair> records;
         GenerateRandomRecordsWithKey(records);
 
         if(isSorted)
         {
-            std::sort(records.begin(), records.end(), [](const RecordWithKey& a, const RecordWithKey& b) {return a.key < b.key;} );
+            std::sort(records.begin(), records.end(), [](const RecordKeyPair& a, const RecordKeyPair& b) {return a.key < b.key;} );
         }
 
         for(int i = 0; i < recordCount; i++)
         {
-            const RecordWithKey& recordWithKey = records[i];
+            const RecordKeyPair& recordWithKey = records[i];
             file << recordWithKey.key << "," << recordWithKey.record->firstData << "," << recordWithKey.record->secondData;
 
             if(i < recordCount - 1)
@@ -33,23 +33,26 @@ void Generator::RecordFileGenerator::GenerateFile()
         }
 
         file.close();
+        return filePath;
     }
+
+    return "";
 }
 
-void Generator::RecordFileGenerator::GenerateRandomRecordsWithKey(std::vector<RecordWithKey>& records) const
+void RecordFileHandler::GenerateRandomRecordsWithKey(std::vector<RecordKeyPair>& records) const
 {
-    srand(time(0));
+    std::srand(std::time(nullptr));
     std::unordered_set<int> alreadyUsedKeys;
     alreadyUsedKeys.reserve(recordCount);
     records.reserve(recordCount);
 
     for(int i = 0; i < recordCount; i++)
     {
-        int key = rand();
+        int key = std::rand();
 
         while (alreadyUsedKeys.find(key) != alreadyUsedKeys.end())
         {
-            key = rand();
+            key = std::rand();
         }
 
         Record record = GenerateRandomRecord();
@@ -58,7 +61,7 @@ void Generator::RecordFileGenerator::GenerateRandomRecordsWithKey(std::vector<Re
     }
 }
 
-void Generator::RecordFileGenerator::PopulateSetsWithFile(const std::vector<ISearchableSet<int, std::shared_ptr<Record>>*>& sets) const
+void RecordFileHandler::PopulateSetsWithFile(const std::vector<ISearchableSet<int, std::shared_ptr<Record>>*>& sets) const
 {
     std::ifstream file(GetFilePath());
 
@@ -89,7 +92,7 @@ void Generator::RecordFileGenerator::PopulateSetsWithFile(const std::vector<ISea
     }
 }
 
-std::string Generator::RecordFileGenerator::GetFilePath() const
+std::string RecordFileHandler::GetFilePath() const
 {
     const std::string fileNamePrefix = isSorted ? "Output_Sorted_" : "Output_";
     const std::string fileExtension = ".txt";
@@ -97,18 +100,18 @@ std::string Generator::RecordFileGenerator::GetFilePath() const
     return filePath;
 }
 
-Generator::Record Generator::RecordFileGenerator::GenerateRandomRecord()
+Record RecordFileHandler::GenerateRandomRecord()
 {
-    const int firstData = rand();
+    const int firstData = std::rand();
     std::string secondData;
 
     for(int i = 0; i < 1000; i++)
     {
         constexpr char initialLetter =  'A';
         constexpr char finalLetter =  'Z';
-        char letter = static_cast<char>(initialLetter + rand() % (finalLetter - initialLetter));
+        char letter = static_cast<char>(initialLetter + std::rand() % (finalLetter - initialLetter));
 
-        if(rand() % 100 < 50)
+        if(std::rand() % 100 < 50)
         {
             letter = static_cast<char>(std::tolower(letter));
         }
