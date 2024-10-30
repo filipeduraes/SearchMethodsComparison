@@ -17,10 +17,12 @@ int main(int argc, char* argv[])
         RecordFileHandler(directoryPath, 100, false),
         RecordFileHandler(directoryPath, 500, false),
         RecordFileHandler(directoryPath, 1000, false),
+        RecordFileHandler(directoryPath, 5000, false),
         RecordFileHandler(directoryPath, 10000, false),
         RecordFileHandler(directoryPath, 100, true),
         RecordFileHandler(directoryPath, 500, true),
         RecordFileHandler(directoryPath, 1000, true),
+        RecordFileHandler(directoryPath, 5000, true),
         RecordFileHandler(directoryPath, 10000, true)
     };
 
