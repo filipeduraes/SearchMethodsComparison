@@ -1,5 +1,4 @@
-
-# Nome do Projeto
+# Projeto T1
 
 Este é o README do projeto **Nome do Projeto**. Este projeto é desenvolvido em C++ e utiliza o CMake como sistema de build. As instruções a seguir guiarão você para configurar, compilar e rodar o projeto em ambientes Windows e Linux.
 
