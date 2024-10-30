@@ -8,6 +8,10 @@
 
 #include "ISearchableSet.h"
 
+/*
+ * Registro que guarda os dados usados nos testes (dado1 (valor inteiro), dado2 (char[1000])
+ * Foi usado uma std::string para facilitar na manipulação dos dados, porém o tamanho continua sendo 1000
+ */
 struct Record
 {
     int firstData;
@@ -19,6 +23,11 @@ struct Record
     }
 };
 
+/*
+ * Guarda um par com a chave do nó e o registro guardado por ele
+ * Foi feito dessa forma ao invés de usar um std::map para facilitar na randomização e na ordenação, já que o std::map não possui indexação
+ * O registro é um std::unique_ptr para não precisar ser liberado manualmente, assim que RecordKeyPair for liberado, ele também será liberado 
+ */
 struct RecordKeyPair
 {
     int key;
@@ -30,6 +39,9 @@ struct RecordKeyPair
     }
 };
 
+/*
+ * Guarda as chaves aleatórias geradas pelo RecordFileHandler (presentes e não presentes)
+ */
 struct RandomRecordKeys
 {
     std::vector<int> presentKeys;
@@ -43,7 +55,10 @@ struct RandomRecordKeys
     }
 };
 
-// Gera e lê os arquivos com registros aleatórios no formato: chave,dado1,dado2
+/*
+ * Gera e lê os arquivos com registros aleatórios no formato: chave,dado1,dado2
+ * Gera e deixa guardado as chaves aleatórias (presentes e não presentes) logo após gerar os arquivos
+ */
 class RecordFileHandler
 {
 private:

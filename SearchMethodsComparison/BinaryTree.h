@@ -6,6 +6,11 @@
 #include "ISearchableSet.h"
 #include "Node.h"
 
+/*
+ * Implementação da árvore binária simples
+ * Foram implementadas a inserção e a busca (usando métodos iterativos para evitar o StackOverflow)
+ * Foi também implementado uma forma de mostrá-la no console, para facilitar nos testes durante o desenvolvimento
+ */
 template<typename TKey, typename TValue>
 class BinaryTree : public ISearchableSet<TKey, TValue>
 {

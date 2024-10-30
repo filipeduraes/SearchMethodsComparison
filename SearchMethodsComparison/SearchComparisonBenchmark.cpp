@@ -81,10 +81,10 @@ void SearchComparisonBenchmark::BenchmarkKeysSearch(const std::vector<int>& keys
         }
     }
 
-    ShowBenchmarkResults();
+    ShowBenchmarkResults((int) keys.size());
 }
 
-void SearchComparisonBenchmark::ShowBenchmarkResults()
+void SearchComparisonBenchmark::ShowBenchmarkResults(const int keysCount)
 {
     std::cout << "\nTempo medio de execucao: ";
         
@@ -97,6 +97,6 @@ void SearchComparisonBenchmark::ShowBenchmarkResults()
         
     for(BenchmarkSetup& benchmarkSetup : setup)
     {
-        std::cout << "\n - " << benchmarkSetup.setLabel << ": " << benchmarkSetup.comparisonSum / 15;
+        std::cout << "\n - " << benchmarkSetup.setLabel << ": " << benchmarkSetup.comparisonSum / keysCount;
     }
 }

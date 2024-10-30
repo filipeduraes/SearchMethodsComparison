@@ -1,5 +1,11 @@
 ﻿#pragma once
 
+/*
+ * Interface base para todos os métodos de busca
+ * Define as operações de inserção, busca e sobrescreve o operador << para ser usado com o std::cout
+ * Usa funções puramente virtuais para serem implementadas pelos métodos de busca
+ * Abstração necessária para simplificar o código dos testes
+ */
 template<typename TKey, typename TValue>
 class ISearchableSet
 {

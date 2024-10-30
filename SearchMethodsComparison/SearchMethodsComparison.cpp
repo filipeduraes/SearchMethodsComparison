@@ -1,6 +1,11 @@
 #include "RecordFileHandler.h"
 #include "SearchComparisonBenchmark.h"
 
+/*
+ * Pega o diretório atual onde o programa está sendo executado
+ * é necessário achar o último separador de caminho (/ ou \) para remover o nome do executável
+ * pode não funcionar dependendo do SO, caso ele não tenha o conceito de diretório, mas funcionará para o windows e linux.
+ */
 std::string GetCurrentDirectoryPath(char** argv)
 {
     const std::string programPath = argv[0];
@@ -8,6 +13,10 @@ std::string GetCurrentDirectoryPath(char** argv)
     return programPath.substr(0, separatorIndex + 1);
 }
 
+/*
+ * 1: Gera os arquivos aleatórios e separa as chaves para o teste
+ * 2: Executa os testes em cima dos arquivos gerados
+ */
 int main(int argc, char* argv[])
 {
     const std::string directoryPath = GetCurrentDirectoryPath(argv);

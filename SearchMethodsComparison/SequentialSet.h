@@ -4,6 +4,11 @@
 #include "ISearchableSet.h"
 #include "Node.h"
 
+/*
+ * Implementa a busca sequencial
+ * Para simplicidade do código de inserção, foi usado um std::vector como estrutura de dados
+ * Sua implementação depende do compilador, mas geralmente é feita usando uma array comum que é realocada após seu limite ser atingido, geralmente dobrando de tamanho
+ */
 template<typename TKey, typename TValue>
 class SequentialSet : public ISearchableSet<TKey, TValue>
 {

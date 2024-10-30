@@ -4,6 +4,12 @@
 #include <stack>
 #include <string>
 
+/*
+ * Cuida da medição do tempo de execução e do cálculo da média entre eles
+ * Ao começar o benchmark, guarda o tempo inicial
+ * Ao finalizar o benchmark, marca o tempo final, diminui do tempo inicial, soma no tempo total e atualiza a quantidade de testes
+ * Retorna o tempo médio ao dividir o tempo total pela quantidade de testes
+ */
 class Benchmark
 {
 private:

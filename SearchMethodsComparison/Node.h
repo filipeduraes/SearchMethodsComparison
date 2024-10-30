@@ -1,5 +1,11 @@
 ﻿#pragma once
 
+/*
+ * Estrutura utilizada por todos os métodos de busca (Sequencial, Árvore Binária e Árvore AVL)
+ * Utiliza template para que possa ser usado qualquer tipo de chave (desde que possa ser comparada) e qualquer tipo de valor
+ * Guarda um par de chave e valor, e ponteiros para os filhos da esquerda, direita e para o nó pai
+ * Na pesquisa sequencial, os três ponteiros permanecem nulos
+ */
 template<typename TKey, typename TValue>
 struct Node
 {
