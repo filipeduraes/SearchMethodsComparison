@@ -1,11 +1,11 @@
-﻿#include "RegisterFileHandler.h"
+﻿#include "RecordFileHandler.h"
 
 #include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
 
-std::string RecordFileHandler::GenerateFile() const
+std::string RecordFileHandler::GenerateFile()
 {
     std::fstream file;
     const std::string& filePath = GetFilePath();
@@ -39,7 +39,7 @@ std::string RecordFileHandler::GenerateFile() const
     return "";
 }
 
-void RecordFileHandler::GenerateRandomRecordsWithKey(std::vector<RecordKeyPair>& records) const
+void RecordFileHandler::GenerateRandomRecordsWithKey(std::vector<RecordKeyPair>& records)
 {
     std::srand(std::time(nullptr));
     std::unordered_set<int> alreadyUsedKeys;
@@ -59,6 +59,8 @@ void RecordFileHandler::GenerateRandomRecordsWithKey(std::vector<RecordKeyPair>&
         alreadyUsedKeys.insert(key);
         records.emplace_back(key, std::make_unique<Record>(record));
     }
+
+    GenerateRandomKeys(alreadyUsedKeys);
 }
 
 void RecordFileHandler::PopulateSetsWithFile(const std::vector<ISearchableSet<int, std::shared_ptr<Record>>*>& sets) const
@@ -120,4 +122,43 @@ Record RecordFileHandler::GenerateRandomRecord()
     }
 
     return Record(firstData, secondData);
+}
+
+void RecordFileHandler::GenerateRandomKeys(std::unordered_set<int> alreadyUsedKeys)
+{
+    std::vector<int> presentKeys(randomKeysLength);
+    std::vector<int> notPresentKeys(randomKeysLength);
+
+    FillNotPresentKeys(alreadyUsedKeys, notPresentKeys);
+    FillPresentKeys(alreadyUsedKeys, presentKeys);
+    
+    randomKeys = RandomRecordKeys(presentKeys, notPresentKeys);
+}
+
+void RecordFileHandler::FillNotPresentKeys(std::unordered_set<int>& keys, std::vector<int>& notPresentKeys)
+{
+    int count = 0;
+
+    while (count < notPresentKeys.size())
+    {
+        int randomKey = std::rand();
+
+        if(keys.find(randomKey) == keys.end())
+        {
+            notPresentKeys[count] = randomKey;
+            count++;
+        }
+    }
+}
+
+
+void RecordFileHandler::FillPresentKeys(std::unordered_set<int>& keys, std::vector<int>& presentKeys)
+{
+    const std::vector<int> keysVector(keys.begin(), keys.end());
+
+    for (int& presentKey : presentKeys)
+    {
+        const int index = std::rand() % keysVector.size();
+        presentKey = keysVector[index];
+    }
 }

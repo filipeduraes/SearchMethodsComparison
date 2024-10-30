@@ -1,4 +1,4 @@
-#include "RegisterFileHandler.h"
+#include "RecordFileHandler.h"
 #include "SearchComparisonBenchmark.h"
 
 std::string GetCurrentDirectoryPath(char** argv)
@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
         RecordFileHandler(directoryPath, 10000, true)
     };
 
-    SearchComparisonBenchmark<15> benchmark(recordFileHandlers);
+    SearchComparisonBenchmark benchmark(recordFileHandlers);
 
     if(!benchmark.TryGenerateRecordFiles())
     {
