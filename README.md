@@ -1,6 +1,6 @@
-# Projeto T1
+# Trabalho 01
 
-Este é o README do projeto **Nome do Projeto**. Este projeto é desenvolvido em C++ e utiliza o CMake como sistema de build. As instruções a seguir guiarão você para configurar, compilar e rodar o projeto em ambientes Windows e Linux.
+Instruções para compilar e executar o projeto.
 
 ---
 
@@ -8,7 +8,7 @@ Este é o README do projeto **Nome do Projeto**. Este projeto é desenvolvido em
 
 Antes de compilar o projeto, certifique-se de ter as seguintes ferramentas instaladas:
 
-- **CMake**: https://cmake.org/download/
+- **CMake**
 - **Compilador C++**:
   - Windows: [Visual Studio](https://visualstudio.microsoft.com/) (com suporte a C++) ou [MinGW](http://www.mingw.org/)
   - Linux: `g++` ou `clang`
@@ -17,19 +17,23 @@ Antes de compilar o projeto, certifique-se de ter as seguintes ferramentas insta
 
 #### Windows
 
-1. **CMake**: Baixe e instale o executável do CMake a partir do link acima e adicione-o ao PATH.
-2. **Compilador**: Instale o Visual Studio com as workloads para C++ ou MinGW e adicione-o ao PATH.
+1. **CMake**: Baixe e instale o executável do CMake a partir do link https://cmake.org/download/ e adicione-o ao PATH.
+2. **Compilador**: Instale o [Visual Studio](https://visualstudio.microsoft.com/) com as workloads para C++ ou [MinGW](http://www.mingw.org/) e adicione-o ao PATH.
 
 #### Linux
 
-1. Instale o CMake e um compilador compatível (como `g++` ou `clang`) usando o gerenciador de pacotes:
+1. Instale o CMake e o pacote de build-essential, que inclui o compilador e o make, usando o gerenciador de pacotes:
     ```bash
     sudo apt update
-    sudo apt install cmake g++
+    sudo apt install cmake build-essential
+    ```
+    ou, para usar o `g++` como compilador:
+    ```bash
+    sudo apt install cmake make g++
     ```
     ou, para usar o `clang` como compilador:
     ```bash
-    sudo apt install cmake clang
+    sudo apt install cmake make clang
     ```
 
 ---
@@ -38,12 +42,10 @@ Antes de compilar o projeto, certifique-se de ter as seguintes ferramentas insta
 
 Uma vez que as ferramentas estejam instaladas, siga as instruções abaixo para compilar o projeto.
 
-### Passo 1: Clone o Repositório
+### Passo 1: Abra o diretório do projeto na linha de comando
 
-Primeiro, clone este repositório para sua máquina:
 ```bash
-git clone https://github.com/usuario/nome-do-repositorio.git
-cd nome-do-repositorio
+cd SearchMethodsComparison
 ```
 
 ### Passo 2: Crie o Diretório de Build
@@ -56,61 +58,32 @@ cd build
 
 ### Passo 3: Configure o Build com o CMake
 
-#### Windows
-
-Para compilar no Windows, use o CMake para gerar o sistema de build para Visual Studio ou MinGW. No diretório `build`, execute:
-
-**Visual Studio**:
-```bash
-cmake .. -G "Visual Studio 16 2019"  # ou substitua pela versão instalada
-```
-
-**MinGW**:
-```bash
-cmake .. -G "MinGW Makefiles"
-```
-
-#### Linux
-
-No Linux, configure o CMake com o seguinte comando:
+Configure o CMake com o seguinte comando:
 ```bash
 cmake ..
 ```
 
 ### Passo 4: Compile o Projeto
 
-Após configurar o CMake, compile o projeto.
+Após configurar o CMake, compile o projeto com o seguinte comando:
+```bash
+cmake --build .
+```
+Ele irá gerar um arquivo executável dentro da pasta de build.
+
+### Passo 5: Execute o programa
 
 #### Windows
-
-**Visual Studio**:
-Abra o arquivo `.sln` gerado no Visual Studio e selecione "Build Solution" (Compilar Solução).
-
-**MinGW**:
-Se estiver usando o MinGW, compile com:
+Após a compilação, será mostrado o path onde foi gerado o arquivo executável. Atualize o comando para o caminho mostrado caso diferente.
 ```bash
-mingw32-make
+.\Debug\SearchMethodsComparison.exe
 ```
 
 #### Linux
-
-No Linux, use o `make` para compilar o projeto:
+Após a compilação, será mostrado o path onde foi gerado o arquivo executável. Atualize o comando para o caminho mostrado caso diferente.
 ```bash
-make
+./SearchMethodsComparison
 ```
-
----
-
-## Executando o Projeto
-
-Após a compilação, o executável será gerado no diretório `build`. Para executar o projeto, use:
-
-```bash
-./nome-do-executavel  # Linux
-nome-do-executavel.exe  # Windows
-```
-
----
 
 ## Dicas para Resolução de Problemas
 
