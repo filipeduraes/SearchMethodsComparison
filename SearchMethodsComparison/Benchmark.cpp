@@ -7,7 +7,7 @@ void Benchmark::Start()
 
 void Benchmark::Stop()
 {
-    const auto endTimePoint = std::chrono::high_resolution_clock::now();
+    const std::chrono::time_point<std::chrono::high_resolution_clock> endTimePoint = std::chrono::high_resolution_clock::now();
 
     const long long start = std::chrono::time_point_cast<std::chrono::microseconds>(startTimePoint).time_since_epoch().count();
     const long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimePoint).time_since_epoch().count();

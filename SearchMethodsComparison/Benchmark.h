@@ -27,7 +27,7 @@ public:
 
     double GetMediumMicroseconds() const
     {
-        return (double) microsecondsSum / testsCount;
+        return static_cast<double>(microsecondsSum) / static_cast<double>(testsCount);
     }
 
     double GetMediumMilliseconds() const

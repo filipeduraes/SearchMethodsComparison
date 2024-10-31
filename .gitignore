@@ -59,6 +59,7 @@
 .vs/
 .vscode/
 [Bb]in/
+[Bb]uild/
 [Oo]bj/
 _UpgradeReport_Files/
 [Pp]ackages/
