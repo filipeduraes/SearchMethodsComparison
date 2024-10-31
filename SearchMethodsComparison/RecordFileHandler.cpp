@@ -4,12 +4,12 @@
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
+#include <ctime>
 
 std::string RecordFileHandler::GenerateFile()
 {
-    std::fstream file;
     const std::string& filePath = GetFilePath();
-    file.open(filePath, std::ios::out);
+    std::ofstream file(filePath);
 
     if(file.is_open())
     {
@@ -18,7 +18,7 @@ std::string RecordFileHandler::GenerateFile()
 
         if(isSorted)
         {
-            std::sort(records.begin(), records.end(), [](const RecordKeyPair& a, const RecordKeyPair& b) {return a.key < b.key;} );
+            std::sort(records.begin(), records.end(), [](const RecordKeyPair& a, const RecordKeyPair& b) { return a.key < b.key; } );
         }
 
         for(int i = 0; i < recordCount; i++)
@@ -37,30 +37,6 @@ std::string RecordFileHandler::GenerateFile()
     }
 
     return "";
-}
-
-void RecordFileHandler::GenerateRandomRecordsWithKey(std::vector<RecordKeyPair>& records)
-{
-    std::srand(std::time(nullptr));
-    std::unordered_set<int> alreadyUsedKeys;
-    alreadyUsedKeys.reserve(recordCount);
-    records.reserve(recordCount);
-
-    for(int i = 0; i < recordCount; i++)
-    {
-        int key = std::rand();
-
-        while (alreadyUsedKeys.find(key) != alreadyUsedKeys.end())
-        {
-            key = std::rand();
-        }
-
-        Record record = GenerateRandomRecord();
-        alreadyUsedKeys.insert(key);
-        records.emplace_back(key, std::make_unique<Record>(record));
-    }
-
-    GenerateRandomKeys(alreadyUsedKeys);
 }
 
 void RecordFileHandler::PopulateSetsWithFile(const std::vector<ISearchableSet<int, std::shared_ptr<Record>>*>& sets) const
@@ -85,13 +61,37 @@ void RecordFileHandler::PopulateSetsWithFile(const std::vector<ISearchableSet<in
                 
                 for (ISearchableSet<int, std::shared_ptr<Record>>* set : sets)
                 {
-                    set->Insert(key, record);                    
+                    set->Insert(key, record);
                 }
             }
         }
 
         file.close();
     }
+}
+
+void RecordFileHandler::GenerateRandomRecordsWithKey(std::vector<RecordKeyPair>& records)
+{
+    std::srand(std::time(nullptr));
+    std::unordered_set<int> alreadyUsedKeys;
+    alreadyUsedKeys.reserve(recordCount);
+    records.reserve(recordCount);
+
+    for(int i = 0; i < recordCount; i++)
+    {
+        int key = std::rand();
+
+        while (alreadyUsedKeys.find(key) != alreadyUsedKeys.end())
+        {
+            key = std::rand();
+        }
+
+        Record record = GenerateRandomRecord();
+        alreadyUsedKeys.insert(key);
+        records.emplace_back(key, std::make_unique<Record>(record));
+    }
+
+    GenerateRandomKeys(alreadyUsedKeys);
 }
 
 std::string RecordFileHandler::GetFilePath() const

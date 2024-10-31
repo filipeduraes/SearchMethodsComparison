@@ -62,8 +62,8 @@ struct RandomRecordKeys
 class RecordFileHandler
 {
 private:
-    RandomRecordKeys randomKeys;
     std::string directory;
+    RandomRecordKeys randomKeys;
     int recordCount;
     int randomKeysLength;
     bool isSorted;
@@ -87,13 +87,17 @@ public:
         return isSorted;
     }
     
-    std::string GenerateFile();
-    void PopulateSetsWithFile(const std::vector<ISearchableSet<int, std::shared_ptr<Record>>*>& sets) const;
-
     RandomRecordKeys GetRandomKeysFromFile()
     {
         return randomKeys;
     }
+    bool CompareKeys(const RecordKeyPair& a, const RecordKeyPair& b)
+    {
+        return a.key < b.key;
+    }
+    
+    std::string GenerateFile();
+    void PopulateSetsWithFile(const std::vector<ISearchableSet<int, std::shared_ptr<Record>>*>& sets) const;
     
 private:
     std::string GetFilePath() const;
