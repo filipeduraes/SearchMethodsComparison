@@ -11,7 +11,7 @@
  *  - Caso esteja desbalanceado, realiza as rotações necessárias para balancear o nó novamente
  */
 template<typename TKey, typename TValue>
-class AVLTree : public BinaryTree<TKey, TValue>
+class AVLTree final : public BinaryTree<TKey, TValue>
 {
 public:
     void Insert(TKey key, TValue value) override;

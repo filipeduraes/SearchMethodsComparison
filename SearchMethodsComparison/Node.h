@@ -38,9 +38,9 @@ struct Node
         {
             return 0;
         }
-        
-        int leftHeight = Node::GetHeight(node->left);
-        int rightHeight = Node::GetHeight(node->right);
+
+        const int leftHeight = Node::GetHeight(node->left);
+        const int rightHeight = Node::GetHeight(node->right);
         return rightHeight - leftHeight;
     }
 

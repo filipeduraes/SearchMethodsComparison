@@ -10,7 +10,7 @@
  * Sua implementação depende do compilador, mas geralmente é feita usando uma array comum que é realocada após seu limite ser atingido, geralmente dobrando de tamanho
  */
 template<typename TKey, typename TValue>
-class SequentialSet : public ISearchableSet<TKey, TValue>
+class SequentialSet final : public ISearchableSet<TKey, TValue>
 {
 private:
     std::vector<Node<TKey, TValue>*> set;

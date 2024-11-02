@@ -2,7 +2,6 @@
 
 #include <chrono>
 #include <stack>
-#include <string>
 
 /*
  * Cuida da medição do tempo de execução e do cálculo da média entre eles
@@ -14,7 +13,6 @@ class Benchmark
 {
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> startTimePoint;
-    std::string label;
     
     long long microsecondsSum = 0;
     double millisecondsSum = 0;

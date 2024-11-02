@@ -103,7 +103,7 @@ std::ostream& BinaryTree<TKey, TValue>::GenerateOutput(std::ostream& stream) con
 }
 
 template <typename TKey, typename TValue>
-std::ostream& BinaryTree<TKey, TValue>::GenerateTreeOutputRecursive(std::ostream& stream, Node<TKey, TValue>* parentNode, int level) const
+std::ostream& BinaryTree<TKey, TValue>::GenerateTreeOutputRecursive(std::ostream& stream, Node<TKey, TValue>* parentNode, const int level) const
 {
     for(int i = 0; i < level; i++)
     {

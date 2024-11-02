@@ -43,7 +43,7 @@ private:
     std::vector<BenchmarkSetup> setup;
     
 public:
-    SearchComparisonBenchmark(const std::vector<RecordFileHandler>& handlers)
+    explicit SearchComparisonBenchmark(const std::vector<RecordFileHandler>& handlers)
         : handlers(handlers)
     {
         
